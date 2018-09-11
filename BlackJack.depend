@@ -1,0 +1,10 @@
+# depslib dependency file v1.0
+1536702848 source:c:\users\sefi\documents\blackjack\main.cpp
+	<iostream>
+	<stdlib.h>
+	<time.h>
+	<stdio.h>
+	<vector>
+	<algorithm>
+	<string>
+
