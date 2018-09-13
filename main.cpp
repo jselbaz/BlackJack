@@ -64,8 +64,8 @@ int main()
         cout << endl << endl;
         int playerHandValue = computeHand(playerHand);
         if (playerHandValue == 21) {
-            cout << "You have BlackJack!" << endl;
-        }
+                    cout << "You have BlackJack!" << endl;
+                }
         while (playerHandValue < 21) {
             char decision;
             cout << "Do you want to hit (h) or stay (s)? " << endl;
@@ -83,12 +83,18 @@ int main()
                     cout << playerHand[i] << endl;
                 }
                 playerHandValue = computeHand(playerHand);
+                if (playerHandValue == 21) {
+                    cout << "You have BlackJack!" << endl;
+                }
                 if (playerHandValue > 21) {
                     cout << "You busted!" << endl;
                 }
                 }
             if (decision == 'S') {
                 playerHandValue = computeHand(playerHand);
+                if (playerHandValue == 21) {
+                    cout << "You have BlackJack!" << endl;
+                }
                 cout << "You have a " << playerHandValue << endl;
                 cout << "*****************" << endl;
                 break;
@@ -103,14 +109,14 @@ int main()
         int dealerHandValue = computeHand(dealerHand);
         std::this_thread::sleep_for(std::chrono::milliseconds(2000));
         cout << "The Dealer's hand is: " << dealerHandValue << endl;
-        if (dealerHandValue == 21) {
-            cout << "The Dealer has BlackJack!" << endl;
-        }
         while (dealerHandValue < 17) {
             dealerHand = hit(playingDeck, dealerHand);
             std::this_thread::sleep_for(std::chrono::milliseconds(2000));
             dealerHandValue = computeHand(dealerHand);
             std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+        }
+        if (dealerHandValue == 21) {
+            cout << "The Dealer has BlackJack!" << endl;
         }
         if (dealerHandValue > 21) {
             cout << "The Dealer busts!" << endl;
@@ -250,7 +256,8 @@ int computeHand(vector<string> handOfCards){
             handValue += 10;
         }
         if (token == "Ace") {
-            char hasAce = 'Y';
+            hasAce = 'Y';
+            cout << hasAce;
             if (hasAce == 'Y' && handValue + 11 > 21) { //count Ace as 1 if an 11 would bust player
                 handValue += 1;
                 }
@@ -289,12 +296,11 @@ int computeHand(vector<string> handOfCards){
                     handValue += 10;
                     break;
                 }
+                if (hasAce == 'Y' && handValue > 21) { //recount an old ace as a 1 if an 11 would bust player given their new hand
+                handValue -= 10;
+                }
             }
-            if (hasAce == 'Y' && handValue > 21) { //recount an old ace as a 1 if an 11 would bust player given their new hand
-            handValue -= 10;
-        }
     }
     cout << "The hand value is: " << handValue << endl;
     return handValue;
 }
-
