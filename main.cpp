@@ -1,6 +1,14 @@
 /******************************************************************************
 
-
+    blackjack.cpp
+    Purpose: Create a CLI game of BlackJack
+    Required Specifications:
+    •   Dealer must hit on soft 17
+    •   Single Deck. The deck is shuffled every 6 rounds.
+    •   Player is not allowed to split cards.
+    •   Keep track of win percentage for the player.
+    @author Sefi Elbaz
+    @version 1.0 9/13/18
 
 *******************************************************************************/
 #include <iostream>
@@ -8,13 +16,14 @@
 #include <time.h>
 #include <stdio.h>
 #include <vector>
-#include <algorithm>
+#include <algorithm> // for random shuffle function
 #include <string>
 #include <thread> //for time delay so program does not
 #include <chrono> //overload user with input at end game
 
 using namespace std;
 
+// function prototype declarations
 vector<string> createDeck();
 vector<string> dealCards(vector<string> &cards);
 vector<string> hit(vector<string> &deck, vector<string> currentHand);
@@ -36,10 +45,10 @@ int main()
     int losses = 0;
     int ties = 0;
     vector<string> playingDeck = createDeck();
-    int numOfRounds = 0;
+    int numOfRounds = 1;
     char playAgain = 'Y';
     while (playAgain =='Y'){
-        if (numOfRounds % 6 ==0){ //reshuffle deck every 6 rounds
+        if (numOfRounds % 6 == 0){ //reshuffle deck every 6 rounds
             vector<string> playingDeck = createDeck();
         }
         vector<string> playerHand = dealCards(playingDeck);
@@ -48,8 +57,8 @@ int main()
             cout << playerHand[i] << endl;
         }
         vector<string> dealerHand = dealCards(playingDeck);
-        cout << "The dealer's face up card is: " << endl;
-        for (int i = 0; i < dealerHand.size() - 1; i++){
+        cout << "The Dealer's face up card is: " << endl;
+        for (int i = 0; i < dealerHand.size() - 1; i++){ //only display dealers "face up" card
             cout << dealerHand[i] << endl;
         }
         cout << endl << endl;
@@ -62,14 +71,14 @@ int main()
             cout << "Do you want to hit (h) or stay (s)? " << endl;
             cin >> decision;
             decision = toupper(decision);
-            while (decision != 'H' && decision != 'S'){
+            while (decision != 'H' && decision != 'S'){ //validate user input
                 cout << "Invalid decision please use 'h' or 's' " << endl;
                 cout << "Do you want to hit (h) or stay (s)? " << endl;
                 cin >> decision;
             }
             if (decision == 'H'){
                 playerHand = hit(playingDeck, playerHand);
-                cout << "Players new hand is: " << endl;
+                cout << "Player's new hand is: " << endl;
                 for (int i = 0; i < playerHand.size(); i++){
                     cout << playerHand[i] << endl;
                 }
@@ -85,15 +94,15 @@ int main()
                 break;
                 }
         }
-        std::this_thread::sleep_for(std::chrono::milliseconds(2000));
-        cout << "The dealer's hand is: " << endl;
+        std::this_thread::sleep_for(std::chrono::milliseconds(2000)); //slow down flow of game so user isnt overloaded with too much data at once
+        cout << "The Dealer's hand is: " << endl;
         for (int i = 0; i < dealerHand.size(); i++){
             cout << dealerHand[i] << endl;
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(2000));
         int dealerHandValue = computeHand(dealerHand);
         std::this_thread::sleep_for(std::chrono::milliseconds(2000));
-        cout << "The dealer's hand is: " << dealerHandValue << endl;
+        cout << "The Dealer's hand is: " << dealerHandValue << endl;
         if (dealerHandValue == 21) {
             cout << "The Dealer has BlackJack!" << endl;
         }
@@ -104,7 +113,7 @@ int main()
             std::this_thread::sleep_for(std::chrono::milliseconds(2000));
         }
         if (dealerHandValue > 21) {
-            cout << "The dealer busts!" << endl;
+            cout << "The Dealer busts!" << endl;
         }
         if (playerHandValue <= 21 && dealerHandValue > 21) {
             cout << "You won! Good job!!" << endl;
@@ -161,6 +170,11 @@ int main()
 
 
 vector<string> createDeck(){
+/**
+    Creates a single deck of 52 playing cards and shuffles it randomly
+    @param none
+    @return the shuffled deck of cards as a vector of strings
+*/
 
 // set up deck variables
     const int suitNum = 4;
@@ -186,19 +200,30 @@ vector<string> createDeck(){
 }
 
 vector<string> dealCards(vector<string> &deck) {
+/**
+    Deals two preshuffled cards to a player and deletes the dealt card from the vector
+    @param the string vector representing the deck (by reference so each card is only dealt once) of cards to deal
+    @return the dealt hand consisting of two cards as a vector of strings
+*/
 
     vector <string> dealtHand;
     string dealtCard1 = deck.back();
-    deck.erase(deck.end());
+    deck.erase(deck.end()); //erase the dealt card so it wont be dealt more than once
     string dealtCard2 = deck.back();
     deck.erase(deck.end());
-    dealtHand.push_back(dealtCard1);
+    dealtHand.push_back(dealtCard1); //add the dealt card to player's hand
     dealtHand.push_back(dealtCard2);
 
     return dealtHand;
 }
 
 vector<string> hit(vector<string> &deck, vector<string> dealtHand) {
+/**
+    Deals and announces a single random card to a player every time it is called
+    @param the string vector representing the deck (by reference so each card is only dealt once)
+    @param the string vector representing the dealtHand to append the newly dealt card
+    @return the dealt hand which now includes the hit card represented as a vector of strings
+*/
 
     string hitCard = deck.back();
     cout << "The new card dealt is " << hitCard << endl;
@@ -209,13 +234,19 @@ vector<string> hit(vector<string> &deck, vector<string> dealtHand) {
 }
 
 int computeHand(vector<string> handOfCards){
+/**
+    Computes a player's hand in terms of numerical value
+    @param the string vector representing the player's hand of cards
+    @return an int representing the player's hand value
+*/
+
     int handValue = 0;
     char hasAce;
     for (int i = 0; i < handOfCards.size(); i++) {
         string faceValue = handOfCards[i];
         string delimiter = " ";
-        string token = faceValue.substr(0, faceValue.find(delimiter));
-        if (token == "Jack" || token == "Queen" || token == "King" ) {
+        string token = faceValue.substr(0, faceValue.find(delimiter)); //tokenize face of card
+        if (token == "Jack" || token == "Queen" || token == "King" ) { //compute value for J,Q,K,A face cards
             handValue += 10;
         }
         if (token == "Ace") {
@@ -227,9 +258,8 @@ int computeHand(vector<string> handOfCards){
                 handValue += 11;
         }
         }
-        cout << hasAce;
         if (token == "2" || token == "3" || token == "4" || token == "5" || token == "6" || token == "7" || token == "8" || token == "9" || token == "10"){
-            int i_dec = stoi(token);
+            int i_dec = stoi(token); //if token is a number convert it to an int and compute numerical face cards
             switch(i_dec) {
                 case 2:
                     handValue += 2;
