@@ -1,5 +1,4 @@
 /******************************************************************************
-
     blackjack.cpp
     Purpose: Create a CLI game of BlackJack
     Required Specifications:
@@ -9,7 +8,6 @@
     •   Keep track of win percentage for the player.
     @author Sefi Elbaz
     @version 1.0 9/13/18
-
 *******************************************************************************/
 #include <iostream>
 #include <stdlib.h>
@@ -27,7 +25,7 @@ using namespace std;
 vector<string> createDeck();
 vector<string> dealCards(vector<string> &cards);
 vector<string> hit(vector<string> &deck, vector<string> currentHand);
-int computeHand(vector<string> handOfCards);
+int computeHand(vector<string> handOfCards, char &soft17);
 
 int main()
 {
@@ -44,6 +42,7 @@ int main()
     int wins = 0;
     int losses = 0;
     int ties = 0;
+    char soft17;
     vector<string> playingDeck = createDeck();
     int numOfRounds = 1;
     char playAgain = 'Y';
@@ -62,7 +61,7 @@ int main()
             cout << dealerHand[i] << endl;
         }
         cout << endl << endl;
-        int playerHandValue = computeHand(playerHand);
+        int playerHandValue = computeHand(playerHand, soft17);
         if (playerHandValue == 21) {
                     cout << "You have BlackJack!" << endl;
                 }
@@ -82,7 +81,7 @@ int main()
                 for (int i = 0; i < playerHand.size(); i++){
                     cout << playerHand[i] << endl;
                 }
-                playerHandValue = computeHand(playerHand);
+                playerHandValue = computeHand(playerHand, soft17);
                 if (playerHandValue == 21) {
                     cout << "You have BlackJack!" << endl;
                 }
@@ -91,28 +90,36 @@ int main()
                 }
                 }
             if (decision == 'S') {
-                playerHandValue = computeHand(playerHand);
+                playerHandValue = computeHand(playerHand, soft17);
                 if (playerHandValue == 21) {
                     cout << "You have BlackJack!" << endl;
                 }
                 cout << "You have a " << playerHandValue << endl;
-                cout << "*****************" << endl;
+                cout << "*******************" << endl;
                 break;
                 }
         }
+        cout << endl << endl;
         std::this_thread::sleep_for(std::chrono::milliseconds(2000)); //slow down flow of game so user isnt overloaded with too much data at once
         cout << "The Dealer's hand is: " << endl;
         for (int i = 0; i < dealerHand.size(); i++){
             cout << dealerHand[i] << endl;
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(2000));
-        int dealerHandValue = computeHand(dealerHand);
+        int dealerHandValue = computeHand(dealerHand, soft17);
         std::this_thread::sleep_for(std::chrono::milliseconds(2000));
         cout << "The Dealer's hand is: " << dealerHandValue << endl;
         while (dealerHandValue < 17) {
+            cout << "The Dealer hits" << endl;
             dealerHand = hit(playingDeck, dealerHand);
             std::this_thread::sleep_for(std::chrono::milliseconds(2000));
-            dealerHandValue = computeHand(dealerHand);
+            dealerHandValue = computeHand(dealerHand, soft17);
+            std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+        }
+        if (dealerHandValue == 17 && soft17 == 'Y') {
+            dealerHand = hit(playingDeck, dealerHand);
+            std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+            dealerHandValue = computeHand(dealerHand, soft17);
             std::this_thread::sleep_for(std::chrono::milliseconds(2000));
         }
         if (dealerHandValue == 21) {
@@ -170,9 +177,6 @@ int main()
     }
     return 0;
 }
-
-//appearance, time delays, and flow
-//proper error catching instead of while loops
 
 
 vector<string> createDeck(){
@@ -239,10 +243,11 @@ vector<string> hit(vector<string> &deck, vector<string> dealtHand) {
     return dealtHand;
 }
 
-int computeHand(vector<string> handOfCards){
+int computeHand(vector<string> handOfCards, char &soft17){
 /**
     Computes a player's hand in terms of numerical value
     @param the string vector representing the player's hand of cards
+    @param the char representing a soft 17 by reference so dealer can hit on it.
     @return an int representing the player's hand value
 */
 
@@ -257,7 +262,6 @@ int computeHand(vector<string> handOfCards){
         }
         if (token == "Ace") {
             hasAce = 'Y';
-            cout << hasAce;
             if (hasAce == 'Y' && handValue + 11 > 21) { //count Ace as 1 if an 11 would bust player
                 handValue += 1;
                 }
@@ -296,8 +300,8 @@ int computeHand(vector<string> handOfCards){
                     handValue += 10;
                     break;
                 }
-                if (hasAce == 'Y' && handValue > 21) { //recount an old ace as a 1 if an 11 would bust player given their new hand
-                handValue -= 10;
+                if (hasAce == 'Y' && handValue == 17) {
+                    soft17 = 'Y';
                 }
             }
     }
