@@ -26,6 +26,7 @@ vector<string> createDeck();
 vector<string> dealCards(vector<string> &cards);
 vector<string> hit(vector<string> &deck, vector<string> currentHand);
 int computeHand(vector<string> handOfCards, char &soft17);
+void delay (int delayTime);
 
 int main()
 {
@@ -43,6 +44,7 @@ int main()
     int losses = 0;
     int ties = 0;
     char soft17;
+    int timeDelay = 2000;
     vector<string> playingDeck = createDeck();
     int numOfRounds = 1;
     char playAgain = 'Y';
@@ -101,33 +103,33 @@ int main()
                 }
         }
         cout << endl << endl;
-        std::this_thread::sleep_for(std::chrono::milliseconds(2000)); //slow down flow of game so user isnt overloaded with too much data at once
+        delay(timeDelay); //slow down flow of game so user isnt overloaded with too much data at once
         cout << "The Dealer's hand is: " << endl;
         for (int i = 0; i < dealerHand.size(); i++){
             cout << dealerHand[i] << endl;
         }
-        std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+        delay(timeDelay);
         int dealerHandValue = computeHand(dealerHand, soft17);
-        std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+        delay(timeDelay);
         cout << "The Dealer's hand is: " << dealerHandValue << endl;
         while (dealerHandValue < 17) {
             cout << "The Dealer hits" << endl;
             dealerHand = hit(playingDeck, dealerHand);
-            std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+            delay(timeDelay);
             dealerHandValue = computeHand(dealerHand, soft17);
-            std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+            delay(timeDelay);
         }
         if (dealerHandValue == 17 && soft17 == 'Y') {
             dealerHand = hit(playingDeck, dealerHand);
-            std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+            delay(timeDelay);
             dealerHandValue = computeHand(dealerHand, soft17);
-            std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+            delay(timeDelay);
             while (dealerHandValue < 17) {
                 cout << "The Dealer hits" << endl;
                 dealerHand = hit(playingDeck, dealerHand);
-                std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+                delay(timeDelay);
                 dealerHandValue = computeHand(dealerHand, soft17);
-                std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+                delay(timeDelay);
             }
         }
         if (dealerHandValue == 21) {
@@ -162,7 +164,7 @@ int main()
         }
         cout << "This round is over" << endl;
         cout << "*******************" << endl;
-        std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+        delay(timeDelay);
         cout << "You have won " << wins << " game(s)" << endl;
         cout << "You have lost " << losses << " game(s)" << endl;
         cout << "You have tied " << ties << " game(s)" << endl;
@@ -318,4 +320,14 @@ int computeHand(vector<string> handOfCards, char &soft17){
         }
     cout << "The hand value is: " << handValue << endl;
     return handValue;
+}
+
+void delay(int delayTime) {
+/**
+    Introduces a time delay so the dealer's turn does not occur faster than the user can keep up
+    @param the int representing the time delay in milliseconds
+    @return none
+*/
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(delayTime));
 }
