@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1536702848 source:c:\users\sefi\documents\blackjack\main.cpp
+1536820289 source:c:\users\sefi\documents\blackjack\main.cpp
 	<iostream>
 	<stdlib.h>
 	<time.h>
@@ -7,4 +7,17 @@
 	<vector>
 	<algorithm>
 	<string>
+	<thread>
+	<chrono>
+
+1536973399 source:c:\users\sefi\documents\blackjack\blackjack.cpp
+	<iostream>
+	<stdlib.h>
+	<time.h>
+	<stdio.h>
+	<vector>
+	<algorithm>
+	<string>
+	<thread>
+	<chrono>
 
