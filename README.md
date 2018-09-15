@@ -48,7 +48,7 @@ C. Potential future improvements
 	I. Coding a GUI for the interface
 	II. Programming this as an Object Oriented program
 	III. Make it more modular
-	IV. Abstract the data more
+	IV. Further abstract the data
 
 III. Credit
 A. ASCII generator used: http://patorjk.com/software/taag
