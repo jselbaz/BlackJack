@@ -34,8 +34,8 @@ This program will be a simpler version of one player against the dealer. There i
 splitting.
 
 B. Program Design
-I chose to program this game procedurally. I wrote functions: to create a deck, deal cards, hit for a card, and to 
-compute the user's and dealer's hands.
+I chose to program this game procedurally. I wrote functions: to create a deck, deal cards, hit for a card, to 
+compute the user's and dealer's hands, and to introduce a time delay for game flow purposes.
 The main program will initialize all necessary variables, seed the random number, and initialize play.
 The user and dealer will be dealt two cards and then the player will begin their turn.
 The player will hit by calling the appropriate function until they bust or until they choose to stay.
@@ -47,6 +47,8 @@ If yes it will repeat the above process. If not it the program will end.
 C. Potential future improvements
 	I. Coding a GUI for the interface
 	II. Programming this as an Object Oriented program
+	III. Make it more modular
+	IV. Abstract the data more
 
 III. Credit
 A. ASCII generator used: http://patorjk.com/software/taag
