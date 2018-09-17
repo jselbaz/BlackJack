@@ -2,10 +2,10 @@
     blackjack.cpp
     Purpose: Create a CLI game of BlackJack
     Required Specifications:
-    •   Dealer must hit on soft 17
-    •   Single Deck. The deck is shuffled every 6 rounds.
-    •   Player is not allowed to split cards.
-    •   Keep track of win percentage for the player.
+    â€¢   Dealer must hit on soft 17
+    â€¢   Single Deck. The deck is shuffled every 6 rounds.
+    â€¢   Player is not allowed to split cards.
+    â€¢   Keep track of win percentage for the player.
     @author Sefi Elbaz
     @version 1.0 9/13/18
 *******************************************************************************/
@@ -26,6 +26,7 @@ vector<string> createDeck();
 vector<string> dealCards(vector<string> &cards);
 vector<string> hit(vector<string> &deck, vector<string> currentHand);
 int computeHand(vector<string> handOfCards, char &soft17);
+void haveBlackJack (int handValue);
 void delay (int delayTime);
 
 int main()
@@ -66,9 +67,7 @@ int main()
         }
         cout << endl << endl;
         int playerHandValue = computeHand(playerHand, soft17);
-        if (playerHandValue == 21) {
-                    cout << "You have BlackJack!" << endl;
-                }
+        haveBlackJack(playerHandValue);
         while (playerHandValue < 21) {
             char decision;
             cout << "Do you want to hit (h) or stay (s)? " << endl;
@@ -86,18 +85,14 @@ int main()
                     cout << playerHand[i] << endl;
                 }
                 playerHandValue = computeHand(playerHand, soft17);
-                if (playerHandValue == 21) {
-                    cout << "You have BlackJack!" << endl;
-                }
+                haveBlackJack(playerHandValue);
                 if (playerHandValue > 21) {
                     cout << "You busted!" << endl;
                 }
                 }
             if (decision == 'S') {
                 playerHandValue = computeHand(playerHand, soft17);
-                if (playerHandValue == 21) {
-                    cout << "You have BlackJack!" << endl;
-                }
+                haveBlackJack(playerHandValue);
                 cout << "You have a " << playerHandValue << endl;
                 cout << "*******************" << endl;
                 break;
@@ -321,6 +316,18 @@ int computeHand(vector<string> handOfCards, char &soft17){
         }
     cout << "The hand value is: " << handValue << endl;
     return handValue;
+}
+
+void haveBlackJack (int handValue) {
+/**
+    Announces if a player has blackjack
+    @param the int representing the value of the player's hand
+    @return none
+*/
+
+    if (handValue == 21) {
+        cout << "You have Blackjack!" << endl;
+    }
 }
 
 void delay(int delayTime) {
