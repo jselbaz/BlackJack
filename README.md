@@ -35,7 +35,7 @@ splitting.
 
 B. Program Design
 I chose to program this game procedurally. I wrote functions: to create a deck, deal cards, hit for a card, to 
-compute the user's and dealer's hands, and to introduce a time delay for game flow purposes.
+compute the user's and dealer's hands, to check for blackjack, and to introduce a time delay for game flow purposes.
 The main program will initialize all necessary variables, seed the random number, and initialize play.
 The user and dealer will be dealt two cards and then the player will begin their turn.
 The player will hit by calling the appropriate function until they bust or until they choose to stay.
