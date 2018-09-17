@@ -2,10 +2,10 @@
     blackjack.cpp
     Purpose: Create a CLI game of BlackJack
     Required Specifications:
-    â€¢   Dealer must hit on soft 17
-    â€¢   Single Deck. The deck is shuffled every 6 rounds.
-    â€¢   Player is not allowed to split cards.
-    â€¢   Keep track of win percentage for the player.
+    •   Dealer must hit on soft 17
+    •   Single Deck. The deck is shuffled every 6 rounds.
+    •   Player is not allowed to split cards.
+    •   Keep track of win percentage for the player.
     @author Sefi Elbaz
     @version 1.0 9/13/18
 *******************************************************************************/
