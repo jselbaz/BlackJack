@@ -10,6 +10,7 @@ obj/Debug
 Blackjack.cbp
 Blackjack.depend
 README.md
+Blacjack.o
 Blackjack.cpp
 
 Program can be built using default make arguments.
